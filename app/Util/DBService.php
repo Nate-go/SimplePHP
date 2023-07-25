@@ -1,16 +1,16 @@
 <?php
 namespace App\Util;
 class DBService {
-    public static function getInsert($data) {
+    public static function getInsertQuery($data) {
 
-        $arr = get_object_vars($data);
-        $id = $arr['id'];
-        unset($arr['id']);
+        $array = get_object_vars($data);
+        $id = $array['id'];
+        unset($array['id']);
         $fields = '';
         $values = '';
         $separator = '';
 
-        foreach ($arr as $key => $value) {
+        foreach ($array as $key => $value) {
             $fields .= $separator . $key;
             if(is_string($value)) {
                 $values .= $separator . "'" . addslashes($value) . "'";
@@ -24,14 +24,14 @@ class DBService {
         
     }
 
-    public static function getUpdate($data) {
-        $arr = get_object_vars($data);
-        $id = $arr['id'];
-        unset($arr['id']);
+    public static function getUpdateQuery($data) {
+        $array = get_object_vars($data);
+        $id = $array['id'];
+        unset($array['id']);
         $updateFields = '';
         $separator = '';
 
-        foreach ($arr as $key => $value) {
+        foreach ($array as $key => $value) {
             $updateFields .= $separator . "$key = " . addslashes($value) . "";
             $separator = ', ';
         }

@@ -2,14 +2,15 @@
 namespace App\Repositories;
 use App\Util\DBService;
 use App\Util\StringService;
-class BaseRepository{
-    public $db;
 
-    public $name;
-    public $className;
+class BaseRepository{
+    private $db;
+
+    private $name;
+    private $className;
 
     public function __construct(){
-        
+
         $this->db = DataBase::getInstance();
         $this->className = StringService::getClassName(get_called_class());
         $this->name = strtolower($this->className) . 's';
@@ -30,7 +31,7 @@ class BaseRepository{
 
     public function create($data)
     {
-        [$id, $fields, $values] = DBService::getInsert($data);
+        [$id, $fields, $values] = DBService::getInsertQuery($data);
 
         $query = "INSERT INTO $this->name ($fields) VALUES ($values)";
         $result = $this->db->exec($query);
@@ -40,7 +41,7 @@ class BaseRepository{
 
     public function update($id, $data)
     {
-        [$id, $updateFields] = DBService::getUpdate($data);
+        [$id, $updateFields] = DBService::getUpdateQuery($data);
 
         $query = "UPDATE $this->name SET $updateFields WHERE id = $id";
         $result = $this->db->exec($query);

@@ -2,23 +2,22 @@
 namespace App\Controllers;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
+
+use App\Services\ProductService;
+use App\Util\Autowired;
 use Symfony\Component\Routing\RouteCollection;
 
-class ProductController
+class ProductController extends BaseController
 {
-    public $productRepo; 
+    private $productService; 
 
-    public function showAction(int $id, RouteCollection $routes)
+    public function __construct(){
+        $this->productService = new ProductService();
+    }
+
+    public function productInfo(int $id, RouteCollection $routes)
     {
-        $this->productRepo = new ProductRepository();
-        $products = $this->productRepo->read($id);
-        if (count($products) > 0) {
-            $product = $products[0];
-        } else {
-            $product = new Product;
-        }
-        
-
-        require_once APP_ROOT . '/views/product.php';
+        $product = $this->productService->getProductById($id);
+        require_once $this->loadView('product.php');
     }
 }
