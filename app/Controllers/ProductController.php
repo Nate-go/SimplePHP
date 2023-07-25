@@ -1,17 +1,23 @@
 <?php 
 namespace App\Controllers;
-
 use App\Models\Product;
+use App\Repositories\ProductRepository;
+
+use App\Services\ProductService;
+use App\Util\Autowired;
 use Symfony\Component\Routing\RouteCollection;
 
-class ProductController
+class ProductController extends BaseController
 {
-    // Show the product attributes based on the id.
-    public function showAction(int $id, RouteCollection $routes)
-    {
-        $product = new Product();
-        $product->read($id);
+    private $productService; 
 
-        require_once APP_ROOT . '/views/product.php';
+    public function __construct(){
+        $this->productService = new ProductService();
+    }
+
+    public function productInfo(int $id, RouteCollection $routes)
+    {
+        $product = $this->productService->getProductById($id);
+        require_once $this->loadView('product.php');
     }
 }

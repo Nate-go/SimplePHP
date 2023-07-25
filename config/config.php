@@ -6,9 +6,10 @@ define('SITE_NAME', 'GO_ToDoList');
 define('APP_ROOT', dirname(dirname(__FILE__)));
 define('URL_ROOT', '/');
 define('URL_SUBFOLDER', '/go-todolist');
+define('ROOT_PATH', 'C:\\xampp\\htdocs\\go-todolist\\app');
 
 //DB Params
-define('DB_HOST', 'your-host');
-define('DB_USER', 'your-username');
-define('DB_PASS', 'your-password');
-define('DB_NAME', 'your-db-name');
+define('DB_HOST', 'localhost:3306');
+define('DB_USER', 'root');
+define('DB_PASS', '123456');
+define('DB_NAME', 'gotodolist');
