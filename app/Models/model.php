@@ -4,12 +4,21 @@ use BadMethodCallException;
 use FFI\Exception;
 
 class Model {
+
+    protected $createTime;
+
+    protected $updateTime;
+
     public function setByArr($arr) {
         foreach ($arr as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }
         }
+    }
+
+    public function __construct() {
+        
     }
 
     public function __call($method, $args) {
