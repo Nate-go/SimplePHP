@@ -1,14 +1,9 @@
 <?php
-namespace App\Models;
+namespace App\Dtos;
 use BadMethodCallException;
 use FFI\Exception;
 
-class Model {
-
-    protected $createTime;
-
-    protected $updateTime;
-
+class BaseDTO {
     public function setByArr($arr) {
         foreach ($arr as $key => $value) {
             if (property_exists($this, $key)) {
