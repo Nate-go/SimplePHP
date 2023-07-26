@@ -1,4 +1,5 @@
 <?php
+namespace App\Util;
 
 // Status
 define('TO_DO', 0);

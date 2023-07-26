@@ -17,7 +17,15 @@
     <section>
         <h1>Homepage</h1>
         <p>
-            <a href="<?php echo $routeToProduct ?>">Check the first product</a>
+            <a><?php 
+            foreach($treeItems as $treeItem){
+                print_r($treeItem->getParentItem());
+                echo '<br>';
+                foreach($treeItem->getSubItems() as $subItem){
+                    print_r('<a>' . print_r($subItem) . '<a/>');
+                    echo '<br>';
+                }
+            } ?></a>
         </p>
     <section>
 

@@ -4,6 +4,11 @@ use BadMethodCallException;
 use FFI\Exception;
 
 class BaseDTO {
+    
+    public function __construct() {
+        
+    }
+    
     public function setByArr($arr) {
         foreach ($arr as $key => $value) {
             if (property_exists($this, $key)) {
@@ -12,9 +17,6 @@ class BaseDTO {
         }
     }
 
-    public function __construct() {
-        
-    }
 
     public function __call($method, $args) {
         $property = lcfirst(substr($method, 3));
