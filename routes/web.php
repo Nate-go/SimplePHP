@@ -5,4 +5,4 @@ use Symfony\Component\Routing\RouteCollection;
 // Routes system
 $routes = new RouteCollection();
 $routes->add('product', new Route(constant('URL_SUBFOLDER') . '/product/{id}', array('controller' => 'ProductController', 'method'=>'productInfo'), array('id' => '[0-9]+')));
-$routes->add('homepage', new Route(constant('URL_SUBFOLDER') . '/', array('controller' => 'PageController', 'method'=>'indexAction'), array()));
+$routes->add('home', new Route(constant('URL_SUBFOLDER') . '/', array('controller' => 'HomeController', 'method'=>'home'), array()));

@@ -1,23 +1,19 @@
 <?php 
 namespace App\Controllers;
-use App\Models\Product;
-use App\Repositories\ProductRepository;
-
-use App\Services\ProductService;
-use App\Util\Autowired;
+use App\Services\ItemService;
 use Symfony\Component\Routing\RouteCollection;
 
 class HomeController extends BaseController
 {
-    private $productService; 
+    private $itemService; 
 
     public function __construct(){
-        $this->productService = new ProductService();
+        $this->itemService = new ItemService();
     }
 
-    public function home(int $id, RouteCollection $routes)
+    public function home(RouteCollection $routes)
     {
-        $product = $this->productService->getProductById($id);
-        require_once $this->loadView('product.php');
+        $treeItems = $this->itemService->getTreeAllItem();
+        require_once $this->loadView('home.php');
     }
 }

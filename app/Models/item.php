@@ -10,5 +10,5 @@ class Item extends Model
     private $category;
     private $status;
     private $finishedTime;
-    private $subItems;
+    private $parentId;
 }
