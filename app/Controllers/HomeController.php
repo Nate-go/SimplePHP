@@ -11,7 +11,7 @@ class HomeController extends BaseController
         $this->itemService = new ItemService();
     }
 
-    public function home(RouteCollection $routes)
+    public function loadHome(RouteCollection $routes)
     {
         $treeItems = $this->itemService->getTreeAllItem();
         require_once $this->loadView('home.php');

@@ -24,24 +24,14 @@ class Model {
     public function __call($method, $args) {
         $property = lcfirst(substr($method, 3));
         
-        if (property_exists($this, $property)) {
-            if (strncasecmp($method, 'get', 3) === 0) {
-                try {
-                    $temp = $this->$property;
-                    return $this->$property;
-                } catch(e) {
-                    return null;
-                }
-            } elseif (strncasecmp($method, 'set', 3) === 0) {
-                try {
-                    $temp = $this->$property;
-                    $this->$property = $args[0];
-                } catch(e) {
-                    return null;
-                }
-            }
-        } else {
+        if (!property_exists($this, $property)) {
             throw new BadMethodCallException("Method $method does not exist.");
+        } 
+        
+        if (strncasecmp($method, 'get', 3) === 0) {
+            return $this->$property;
+        } elseif (strncasecmp($method, 'set', 3) === 0) {
+            $this->$property = $args[0];
         }
     }
 }
