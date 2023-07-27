@@ -3,24 +3,28 @@ namespace App\Repositories;
 use App\Util\DBService;
 use App\Util\StringService;
 use BadMethodCallException;
+use App\Models\Item;
+
+spl_autoload_register(function ($className) {
+    echo $className;
+    $filePath = ROOT_PATH . '\\' . 'Models' . '\\' . strtolower($className) . '.php';
+    echo $filePath;
+    // Check if the file exists and load it if it does
+    if (file_exists($filePath)) {
+        require_once $filePath;
+    }
+});
 
 class BaseRepository{
     private $db;
 
     private $tableName;
-    private $className;
 
     public function __construct(){
 
         $this->db = DataBase::getInstance();
-        $this->className = StringService::getClassName(get_called_class());
-        $this->tableName = strtolower($this->className) . 's';
-    }
-
-    private function getObject() {
-        $cName = $this->className;
-        $object = new $cName();
-        return $object;
+        $className = StringService::getClassName(get_called_class());
+        $this->tableName = strtolower($className) . 's';
     }
 
     public function findAll() {
@@ -28,8 +32,7 @@ class BaseRepository{
         $req = $this->db->query('SELECT * FROM ' . $this->tableName);
 
         foreach ($req->fetchAll() as $item) {
-            $object = $this->getObject();
-            $list[] = $object->setByArr($item);
+            $list[] = $item;
         }
 
         return $list;
@@ -71,8 +74,7 @@ class BaseRepository{
         $req = $this->db->query('SELECT * FROM ' . $this->tableName . ' WHERE id = ' . addslashes($id));
 
         foreach ($req->fetchAll() as $item) {
-            $object = $this->getObject();
-            $list[] = $object->setByArr($item);
+            $list[] = $item;
         }
 
         return $list; 
@@ -89,8 +91,7 @@ class BaseRepository{
         $req = $this->db->query('SELECT * FROM ' . $this->tableName . ' WHERE'. $property . '=' . addslashes($args[0]));
 
         foreach ($req->fetchAll() as $item) {
-            $object = $this->getObject();
-            $list[] = $object->setByArr($item);
+            $list[] = $item;
         }
         return $list; 
     }
