@@ -33,4 +33,8 @@ class Category extends Model
             $this->$property = $args[0];
         }
     }
+
+    public function getListVariable(){
+        return get_object_vars($this);
+    }
 }

@@ -24,7 +24,7 @@ class BaseRepository{
 
         $this->db = DataBase::getInstance();
         $className = StringService::getClassName(get_called_class());
-        $this->tableName = strtolower($className) . 's';
+        $this->tableName = StringService::pluralize(strtolower($className));;
     }
 
     public function findAll() {
@@ -82,13 +82,16 @@ class BaseRepository{
 
     public function __call($method, $args) {
         $property = lcfirst(substr($method, 5));
-        
-        if (!property_exists($this->getObject(), $property)) {
-            throw new BadMethodCallException("Method $method does not exist.");
-        }
 
         $list = [];
-        $req = $this->db->query('SELECT * FROM ' . $this->tableName . ' WHERE'. $property . '=' . addslashes($args[0]));
+        $arg = $args[0] === null ? 'null' : $args[0];
+        if(is_numeric($arg)) {
+            $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE '. $property . '=' . $arg;
+        } else {
+            $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE '. $property . '=' . '"'. $arg . '"';
+        }
+        
+        $req = $this->db->query($sql);
 
         foreach ($req->fetchAll() as $item) {
             $list[] = $item;
