@@ -3,12 +3,21 @@
 <head>
     <title>Add Item</title>
     <style>
-          <?php require_once 'css/addItem.css'; ?>
+          <?php require_once 'css/infoItem.css'; ?>
       </style>
 </head>
 <body>
+    <div class="container">
     <h1>Add Item</h1>
-    <a class="btn" href="<?php echo $routes->get('loadHome')->getPath() ?>">Home</a>
+    <div class="header">
+            <div class="header-left">
+                <a class="btn" href="<?php echo $routes->get('addCategory')->getPath() ?>">Add Category</a>
+            </div>
+            <div class="header-right">
+            <a class="btn" href="<?php echo $routes->get('loadHome')->getPath() ?>">Home</a>
+            </div>
+        </div>
+    
     <form id="addProductForm" action="<?php echo $id?>" method="post">
         <label for="title">Title</label>
         <input class='input' type="text" name="title" id="title" required>
@@ -44,5 +53,6 @@
         <br>
         <input class="btn" type="submit" value="Add">
     </form>
+    </div>
 </body>
 </html>

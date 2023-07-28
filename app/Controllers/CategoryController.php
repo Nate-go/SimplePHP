@@ -11,7 +11,7 @@ class CategoryController extends BaseController
         $this->categoryService = new CategoryService();
     }
 
-    public function addCategory($id=null, RouteCollection $routes){
+    public function addCategory(RouteCollection $routes){
         // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //     $title = $_POST['title'];
         //     $content = $_POST['content'];
