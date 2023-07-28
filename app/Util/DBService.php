@@ -23,16 +23,25 @@ class DBService {
     }
 
     public static function getUpdateQuery($data) {
-        $array = get_object_vars($data);
+        $array = $data->getListVariable();
         $id = $array['id'];
         unset($array['id']);
+        unset($array['createTime']);
+        if(array_key_exists('parentId', $array)) {
+            unset($array['parentId']);
+        }
         $updateFields = '';
         $separator = '';
 
         foreach ($array as $key => $value) {
-            $updateFields .= $separator . "$key = " . addslashes($value) . "";
+            if(is_string($value) and $value !== 'null') {
+                $updateFields .= $separator . "$key = '" . addslashes($value) . "'";
+            } else {
+                $updateFields .= $separator . "$key = " . addslashes($value) . "";
+            }
             $separator = ', ';
         }
+        
 
         return [$id, $updateFields];
     }

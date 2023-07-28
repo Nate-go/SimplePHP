@@ -22,19 +22,36 @@ class ItemController extends BaseController
             $finishedTime = $_POST['finishedTime'];
         
             $this->itemService->add($title, $content, $category, $status, $finishedTime, $id);
-
-            $home = new HomeController();
-            $home->loadHome($routes);
-        } else {
-            $allCategories = $this->categoryService->getAll();
-            require_once $this->loadView('addItem.php');
-        }
-        
+        } 
+        $allCategories = $this->categoryService->getAll();
+        require_once $this->loadView('addItem.php');
     }
 
-    public function deleteItem($id, RouteCollection $routes){
-        $this->itemService->delete($id);
-        $home = new HomeController();
-        $home->loadHome($routes);
+    public function getInfoItem($id, RouteCollection $routes){
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if(isset($_POST['model'])) {
+                $model = $_POST['model'];
+                $id = $_POST['id'];
+
+                if($_POST-> $model === '0') {
+                    $this->itemService->delete(intval($id));
+                } elseif($model === '1') {
+                    $this->categoryService->delete(intval($id));
+                }
+            } else {
+                $content = $_POST['content'];
+                $title = $_POST['title'];
+                $category = $_POST['category'];
+                $status = $_POST['status'];
+                $finishTime = $_POST['finishTime'];
+                $this->itemService->update($id, $title, $content, $category, $status, $finishTime, null);
+            }
+        }
+        $mainItem = $this->itemService->getById($id);
+        $subItems = $this->itemService->getSubItems($id);
+        $parentItems = [$this->itemService->getById($mainItem->getParentId())];
+        $allCategories = $this->categoryService->getAll();
+        require_once $this->loadView('infoItem.php');
     }
 }

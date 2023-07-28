@@ -8,7 +8,6 @@
 </head>
 <body>
     <h1>Add Item</h1>
-    <a class="btn" href="<?php echo $routes->get('loadHome')->getPath() ?>">Home</a>
     <form id="addProductForm" action="<?php echo $id?>" method="post">
         <label for="title">Title</label>
         <input class='input' type="text" name="title" id="title" required>

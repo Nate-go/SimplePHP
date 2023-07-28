@@ -19,6 +19,18 @@ class HomeController extends BaseController
 
     public function loadHome(RouteCollection $routes)
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if(isset($_POST['model'])) {
+                $model = $_POST['model'];
+                $id = $_POST['id'];
+            
+                if($model === '0') {
+                    $this->itemService->delete(intval($id));
+                } elseif($model === '1') {
+                    $this->categoryService->delete(intval($id));
+                }
+            }
+        }
         $todayItems = $this->itemService->getTodayItems();
         $allItems = $this->itemService->getAll();
         $allCategory = $this->categoryService->getAll();
