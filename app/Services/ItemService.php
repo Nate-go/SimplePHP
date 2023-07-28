@@ -11,14 +11,14 @@ class ItemService{
         $this->itemRepository = new ItemRepository();
     }
 
-    private function mappingData($list){
-        $array = array();
-        foreach($list as $element) {
+    private function mappingData($rows){
+        $listItem = array();
+        foreach($rows as $element) {
             $item = new Item();
             $item->setByArr($element);
-            $array[] =  $item;
+            $listItem[] =  $item;
         }
-        return $array;
+        return $listItem;
     }
 
     public function getTreeAllItem(){
@@ -43,8 +43,19 @@ class ItemService{
         return $treeItem;
     }
 
+    public function getTodayItems(){
+        $date = date('Y-m-d');
+        $items = $this->mappingData($this->itemRepository->getByFinishTime($date));
+        return $items;
+    }
+
+    public function getAll(){
+        $items = $this->mappingData($this->itemRepository->findAll());
+        return $items;
+    }
+
     public function getAllParentItem() {
-        $parentItems = $this->mappingData($this->itemRepository->getByParentId(0));
+        $parentItems = $this->mappingData($this->itemRepository->getByParentId(null));
 
         return $parentItems;
     }
@@ -65,7 +76,7 @@ class ItemService{
     }
 
     public function add($title=null, $content=null, $category=null, $status=null, $finishedTime=null, $parentId= null) {
-        $item = new Item($title=null, $content=null, $category=null, $status=null, $finishedTime=null, $parentId= null);
+        $item = new Item($title, $content, $category, $status, $finishedTime, $parentId);
         $date = date('Y-m-d H:i:s');
         $item->setCreateTime($date);
         $item->setUpdateTime($date);
@@ -86,6 +97,10 @@ class ItemService{
     }
 
     public function delete($id) {
+        $subitems = $this->getSubItems($id);
+        foreach($subitems as $item) {
+            $this->delete($item->getId());
+        }
         $result = $this->itemRepository->delete($id);
         return $result;
     }

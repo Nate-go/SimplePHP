@@ -8,24 +8,24 @@ class Item extends Model
     private $id;
     private $title;
     private $content;
-    private $category;
+    private $categoryId;
     private $status;
-    private $finishedTime;
+    private $finishTime;
     private $parentId;
 
-    public function __construct($title=null, $content=null, $category=null, $status=null, $finishedTime=null, $parentId= null){
+    public function __construct($title=null, $content=null, $categoryId=null, $status=null, $finishTime=null, $parentId= null){
         $this->title = $title;
         $this->content = $content;
-        $this->category = $category;
+        $this->categoryId = $categoryId;
         $this->status = $status;
-        $this->finishedTime = $finishedTime;
+        $this->finishTime = $finishTime;
         $this->parentId = $parentId;
     }
 
     public function setByArr($array) {
         foreach ($array as $key => $value) {
             if(!is_numeric($key)) {
-                $this->$key = $value;
+                $this->$key = $value; 
             }
         }
     }
@@ -42,5 +42,9 @@ class Item extends Model
         } elseif (strncasecmp($method, 'set', 3) === 0) {
             $this->$property = $args[0];
         }
+    }
+
+    public function getListVariable(){
+        return get_object_vars($this);
     }
 }
