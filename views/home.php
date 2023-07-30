@@ -10,8 +10,8 @@
     <div class="container">
         <div class="header">
             <div class="header-left">
-                <button class="btn" onclick="<?php $routes->get('addItem')->getPath() ?>">Add</button>
-                
+                <a class="btn" href="<?php echo str_replace('{id}', 'null', $routes->get('addItem')->getPath()) ?>">Add Item</a>
+                <a class="btn" href="<?php echo $routes->get('addCategory')->getPath() ?>">Add Category</a>
             </div>
             <div class="header-right">
                 <button class="btn">Search</button>
@@ -26,99 +26,110 @@
         </div>
 
         <div id="tab1" class="tabcontent" style="display: block;">
-            <table class="task-table" id="table1">
-                <tr>
-                    <th>Title</th>
-                    <th>Update Date</th>
-                    <th>Finish Date</th>
-                    <th>Status : 
-                        <select onchange="filterTableByStatus('table1')">
-                            <option value='ALL'>ALL</option>
-                            <option value='TODO'>TODO</option>
-                            <option value='INPROGRESS'>INPROGRESS</option>
-                            <option value='COMPLETE'>COMPLETE</option>
-                            <option value='POSTPONE'>POSTPONE</option>
-                        </select>
-                    </th>
-                    <th>Action</th>
-                </tr>
-                <?php
-                        $html = '';
-                        foreach ($todayItems as $item) {
-                            $html .= '<tr>';
-                            $html .= '<td>' . $item->getTitle() . '</td>';
-                            $html .= '<td>' . $item->getUpdateTime() . '</td>';
-                            $html .= '<td>' . $item->getFinishTime() . '</td>';
-                            $html .= '<td>' . STATUS[$item->getStatus()] . '</td>';
-                            $html .= '<td>';
-                            $html .= '<a href=' . str_replace('{id}', $item->getId(), $routes->get('deleteItem')->getPath()) . ' class="delete-btn">Delete</a>';
-                            $html .= '<button class="edit-btn">Edit</button>';
-                            $html .= '</td>';
-                            $html .= '</tr>';
-                        }
-                    echo $html;
-                ?>
-            </table>
+            <div class="roll-table">
+                <table class="task-table" id="table1">
+                    <tr>
+                        <th>Title</th>
+                        <th>Update Date</th>
+                        <th>Finish Date</th>
+                        <th>Status : 
+                            <select onchange="filterTableByStatus('table1')">
+                                <option value='ALL'>ALL</option>
+                                <option value='TODO'>TODO</option>
+                                <option value='INPROGRESS'>INPROGRESS</option>
+                                <option value='COMPLETE'>COMPLETE</option>
+                                <option value='POSTPONE'>POSTPONE</option>
+                            </select>
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                    <?php
+                            $html = '';
+                            foreach ($todayItems as $item) {
+                                $html .= '<tr>';
+                                $html .= '<td>' . $item->getTitle() . '</td>';
+                                $html .= '<td>' . $item->getUpdateTime() . '</td>';
+                                $html .= '<td>' . $item->getFinishTime() . '</td>';
+                                $html .= '<td>' . STATUS[$item->getStatus()] . '</td>';
+                                $html .= '<td>';
+                                $html .= '<a class="delete-btn" onclick="postForm(0, ' . $item->getId() . ')">Delete</a>';
+                                $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('getInfoItem')->getPath()) . '">Edit</a>';
+                                $html .= '</td>';
+                                $html .= '</tr>';
+                            }
+                        echo $html;
+                    ?>
+                </table>
+            </div>
         </div>
 
         <div id="tab2" class="tabcontent">
-        <table class="task-table" id="table2">
-                <tr>
-                    <th>Title</th>
-                    <th>Update Date</th>
-                    <th>Finish Date</th>
-                    <th>Status :
-                        <select onchange="filterTableByStatus('table2')">
-                            <option value='ALL'>ALL</option>
-                            <option value='TODO'>TODO</option>
-                            <option value='INPROGRESS'>INPROGRESS</option>
-                            <option value='COMPLETE'>COMPLETE</option>
-                            <option value='POSTPONE'>POSTPONE</option>
-                        </select>
-                    </th>
-                    <th>Action</th>
-                </tr>
-                <?php
-                        $html = '';
-                        foreach ($allItems as $item) {
-                            $html .= '<tr>';
-                            $html .= '<td>' . $item->getTitle() . '</td>';
-                            $html .= '<td>' . $item->getUpdateTime() . '</td>';
-                            $html .= '<td>' . $item->getFinishTime() . '</td>';
-                            $html .= '<td>' . STATUS[$item->getStatus()] . '</td>';
-                            $html .= '<td>';
-                            $html .= '<a href=' . str_replace('{id}', $item->getId(), $routes->get('deleteItem')->getPath()) . ' class="delete-btn">Delete</a>';
-                            $html .= '<button class="edit-btn">Edit</button>';
-                            $html .= '</td>';
-                            $html .= '</tr>';
-                        }
-                    echo $html;
-                ?>
-            </table>
+            <div class="roll-table">
+                <table class="task-table" id="table2">
+                    <tr>
+                        <th>Title</th>
+                        <th>Update Date</th>
+                        <th>Finish Date</th>
+                        <th>Status :
+                            <select onchange="filterTableByStatus('table2')">
+                                <option value='ALL'>ALL</option>
+                                <option value='TODO'>TODO</option>
+                                <option value='INPROGRESS'>INPROGRESS</option>
+                                <option value='COMPLETE'>COMPLETE</option>
+                                <option value='POSTPONE'>POSTPONE</option>
+                            </select>
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                    <?php
+                            $html = '';
+                            foreach ($allItems as $item) {
+                                $html .= '<tr>';
+                                $html .= '<td>' . $item->getTitle() . '</td>';
+                                $html .= '<td>' . $item->getUpdateTime() . '</td>';
+                                $html .= '<td>' . $item->getFinishTime() . '</td>';
+                                $html .= '<td>' . STATUS[$item->getStatus()] . '</td>';
+                                $html .= '<td>';
+                                $html .= '<a class="delete-btn" onclick="postForm(0, ' . $item->getId() . ')">Delete</a>';
+                                $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('getInfoItem')->getPath()) . '">Edit</a>';
+                                $html .= '</td>';
+                                $html .= '</tr>';
+                            }
+                        echo $html;
+                    ?>
+                </table>
+            </div>
         </div>
 
+        <form id="postForm" action="" method="POST">
+            <input id="model" hidden name="model" value="">
+            <input id="id" hidden name="id" value="">
+        </form>
+
         <div id="tab3" class="tabcontent">
-        <table class="task-table">
-                <tr>
-                    <th>Content</th>
-                    <th>Update Date</th>
-                    <th>Action</th>
-                </tr>
-                <?php
+            <div class="roll-table">
+                <table class="task-table">
+                    <tr>
+                        <th>Content</th>
+                        <th>Update Date</th>
+                        <th>Action</th>
+                    </tr>
+                    <?php
                         $html = '';
                         foreach ($allCategory as $item) {
                             $html .= '<tr>';
                             $html .= '<td>' . $item->getContent() . '</td>';
                             $html .= '<td>' . $item->getUpdateTime() . '</td>';
                             $html .= '<td>';
-                            $html .= '<a href=' . str_replace('{id}', $item->getId(), $routes->get('deleteCategory')->getPath()) . ' class="delete-btn">Delete</a>';
-                            $html .= '<button class="edit-btn">Edit</button>';
+                            $html .= '<a class="delete-btn" onclick="postForm(1, ' . $item->getId() . ')">Delete</a>';
+                            $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('getInfoCategory')->getPath()) . '">Edit</a>';
                             $html .= '</td>';
                             $html .= '</tr>';
                         }
-                    echo $html;
-                ?>
-            </table>
+                        echo $html;
+                    ?>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -159,6 +170,13 @@
                     }
                 }
             }
+        }
+
+        function postForm(model, id){
+            document.getElementById('id').value = id;
+            document.getElementById('model').value = model;
+            form = document.getElementById("postForm");
+            form.submit();
         }
     </script>
 </body>

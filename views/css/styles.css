@@ -5,7 +5,9 @@ body {
 }
 
 .container {
-  padding: 150px;
+  padding-left: 150px;
+  padding-right: 150px;
+  padding-top: 20px;
   width: calc(100% - 20px);
   height: 100vh;
   box-sizing: border-box;
@@ -38,6 +40,7 @@ body {
   border: none;
   cursor: pointer;
   margin-right: 10px;
+  text-decoration: none;
 }
 
 .search-bar {
@@ -83,11 +86,12 @@ body {
 }
 
 .delete-btn {
-  padding: 6px 10px;
+  padding: 4px 8px;
   background-color: #f44336;
   color: #fff;
   border: none;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .delete-btn:hover {
@@ -95,11 +99,12 @@ body {
 }
 
 .edit-btn {
-  padding: 6px 10px;
+  padding: 4px 8px;
   background-color: #3b75db;
   color: #fff;
   border: none;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .edit-btn:hover {

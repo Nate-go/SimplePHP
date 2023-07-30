@@ -55,6 +55,7 @@ class BaseRepository{
         [$id, $updateFields] = DBService::getUpdateQuery($data);
 
         $query = "UPDATE $this->tableName SET $updateFields WHERE id = $id";
+
         $result = $this->db->exec($query);
         
         return $result;
@@ -70,8 +71,12 @@ class BaseRepository{
 
     public function read($id)
     {
+        if($id === null) {
+            $id = 'null';
+        }
         $list = [];
-        $req = $this->db->query('SELECT * FROM ' . $this->tableName . ' WHERE id = ' . addslashes($id));
+        $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE id = ' . addslashes($id);
+        $req = $this->db->query($sql);
 
         foreach ($req->fetchAll() as $item) {
             $list[] = $item;
@@ -84,11 +89,12 @@ class BaseRepository{
         $property = lcfirst(substr($method, 5));
 
         $list = [];
-        $arg = $args[0] === null ? 'null' : $args[0];
-        if(is_numeric($arg)) {
-            $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE '. $property . '=' . $arg;
+        
+        if(is_numeric($args[0])) {
+            $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE '. $property . '=' . $args[0];
         } else {
-            $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE '. $property . '=' . '"'. $arg . '"';
+            $arg = $args[0] === null ? ' is null' : '=' . '"'. $args[0] . '"';
+            $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE '. $property . $arg;
         }
         
         $req = $this->db->query($sql);

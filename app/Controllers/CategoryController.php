@@ -10,4 +10,12 @@ class CategoryController extends BaseController
     public function __construct(){
         $this->categoryService = new CategoryService();
     }
+
+    public function addCategory(RouteCollection $routes){
+
+    }
+
+    public function getInfoCategory($id, RouteCollection $routes){
+        
+    }
 }

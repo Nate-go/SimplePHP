@@ -88,7 +88,7 @@ class ItemService{
     }
 
     public function update($id, $title=null, $content=null, $category=null, $status=null, $finishedTime=null, $parentId= null) {
-        $item = new Item($title=null, $content=null, $category=null, $status=null, $finishedTime=null, $parentId= null);
+        $item = new Item($title, $content, $category, $status, $finishedTime, $parentId);
         $item->setId($id);
         $date = date('Y-m-d H:i:s');
         $item->setUpdateTime($date);
