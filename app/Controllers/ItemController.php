@@ -6,6 +6,8 @@ use Symfony\Component\Routing\RouteCollection;
 
 class ItemController extends BaseController
 {
+    const ITEM_MODEL = 0;
+    const CATEGORY_MODEL = 1;
     private $itemService; 
     private $categoryService;
     public function __construct(){
@@ -34,9 +36,9 @@ class ItemController extends BaseController
                 $model = $_POST['model'];
                 $id = $_POST['id'];
 
-                if($_POST-> $model === '0') {
+                if($_POST-> $model === self::ITEM_MODEL) {
                     $this->itemService->delete(intval($id));
-                } elseif($model === '1') {
+                } elseif($model === self::CATEGORY_MODEL) {
                     $this->categoryService->delete(intval($id));
                 }
             } else {
