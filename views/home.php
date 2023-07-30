@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Task Management</title>
+    <title>Home</title>
     <style>
           <?php require_once 'css/styles.css'; ?>
       </style>
 </head>
 <body>
     <div class="container">
+    <h1>Your Todo List</h1>
         <div class="header">
             <div class="header-left">
                 <a class="btn" href="<?php echo str_replace('{id}', 'null', $routes->get('addItem')->getPath()) ?>">Add Item</a>
                 <a class="btn" href="<?php echo $routes->get('addCategory')->getPath() ?>">Add Category</a>
             </div>
             <div class="header-right">
-                <button class="btn">Search</button>
-                <input type="text" class="search-bar" placeholder="Search...">
+                <!-- <button class="btn">Search</button>
+                <input type="text" class="search-bar" placeholder="Search..."> -->
             </div>
         </div>
 

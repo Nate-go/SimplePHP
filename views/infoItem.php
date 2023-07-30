@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Task Management</title>
+    <title>Item Infomation</title>
     <style>
           <?php require_once 'css/infoItem.css'; ?>
       </style>
 </head>
 <body>
     <div class="container">
+        <h1>Item Infomation</h1>
         <div class="header">
             <div class="header-left">
                 <a class="btn" href="<?php echo str_replace('{id}', $mainItem->getId(), $routes->get('addItem')->getPath()) ?>">Add Child</a>
