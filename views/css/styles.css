@@ -114,3 +114,16 @@ h1 {
 .edit-btn:hover {
   background-color: #09489b;
 }
+
+.finish-btn {
+  padding: 4px 8px;
+  background-color: #17c312;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.finish-btn:hover {
+  background-color: #058505;
+}

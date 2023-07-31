@@ -1,5 +1,6 @@
 <?php 
 namespace App\Controllers;
+use App\Models\Item;
 use App\Services\CategoryService;
 use App\Services\ItemService;
 use Symfony\Component\Routing\RouteCollection;
@@ -28,6 +29,11 @@ class ItemController extends BaseController
 
     private function getMethodAddItem($id, RouteCollection $routes){
         $allCategories = $this->categoryService->getAll();
+        $categories = array();
+        foreach ($allCategories as $category) {
+            $categories[$category->getId()] = $category->getContent();                                 
+        }
+        $parentItem = $id === null ? new Item() : $this->itemService->getById($id);
         require_once $this->loadView('addItem.php');
     }
 
@@ -86,6 +92,10 @@ class ItemController extends BaseController
         $subItems = $this->itemService->getSubItems($id);
         $parentItems = [$this->itemService->getById($mainItem->getParentId())];
         $allCategories = $this->categoryService->getAll();
+        $categories = array();
+        foreach ($allCategories as $category) {
+            $categories[$category->getId()] = $category->getContent();                                 
+        }
         require_once $this->loadView('infoItem.php');
     }
 }

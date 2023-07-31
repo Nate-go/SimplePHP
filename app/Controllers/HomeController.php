@@ -9,8 +9,9 @@ use Symfony\Component\Routing\RouteCollection;
 
 class HomeController extends BaseController
 {
-    const ITEM_MODEL = 0;
-    const CATEGORY_MODEL = 1;
+    const DELETE_ITEM = 0;
+    const DELETE_CATEGORY = 1;
+    const FINISH = 2;
     private $itemService; 
     private $categoryService;
 
@@ -37,12 +38,15 @@ class HomeController extends BaseController
             $id = $_POST['id'];
             
             switch ($model) {
-                case self::ITEM_MODEL:
-                  $this->deleteItem($id);
-                  break;
-                case self::CATEGORY_MODEL:
-                  $this->deleteCategory($id);
-                  break;
+                case self::DELETE_ITEM:
+                    $this->deleteItem($id);
+                    break;
+                case self::DELETE_CATEGORY:
+                    $this->deleteCategory($id);
+                    break;
+                case self::FINISH:
+                    $this->finishItem($id);
+                    break;
             }
         }
         $this->getMethodHome($routes);
@@ -51,7 +55,11 @@ class HomeController extends BaseController
     private function getMethodHome(RouteCollection $routes){
         $todayItems = $this->itemService->getTodayItems();
         $allItems = $this->itemService->getAll();
-        $allCategory = $this->categoryService->getAll();
+        $allCategories = $this->categoryService->getAll();
+        $categories = array();
+        foreach ($allCategories as $category) {
+            $categories[$category->getId()] = $category->getContent();                                 
+        }
         require_once $this->loadView('home.php');
     }
 
@@ -61,5 +69,9 @@ class HomeController extends BaseController
 
     private function deleteCategory($id){
         $this->categoryService->delete(intval($id));
+    }
+
+    private function finishItem($id){
+        $this->itemService->finishItem($id);
     }
 }

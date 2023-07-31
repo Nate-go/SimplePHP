@@ -95,6 +95,64 @@ class ItemService{
     public function update($id, $title=null, $content=null, $category=null, $status=null, $finishedTime=null, $parentId= null) {
         $item = new Item($title, $content, $category, $status, $finishedTime, $parentId);
         $item->setId($id);
+        $oldItem = $this->getById($id);
+        $result = $this->updateItem($item);
+        $this->checkUpdate($id, $oldItem->getStatus(), $oldItem->getCategoryId());
+        return $result;
+    }
+
+    private function checkUpdate($id, $status, $category){
+        $item = $this->getById($id);
+        if($status != $item->getStatus()) {
+            $this->updateStatus($item);
+        } 
+        if($category != $item->getCategoryId()){
+            $this->updateCategory($item);
+        }
+    }
+
+    private function updateStatus($item){
+        if($item->getParentId() != null){
+            $this->updateStatusForParent($item);
+        }
+        $subItems = $this->getSubItems($item->getId());
+        foreach($subItems as $subItem) {
+            $subItem->setStatus($item->getStatus());
+            $this->updateItem($subItem);
+        }
+    }
+
+    private function updateStatusForParent($item) {
+        $parentItem = $this->getById($item->getParentId());
+        $subItems = $this->getSubItems($parentItem->getId());
+        foreach($subItems as $subItem) {
+            if($subItem->getStatus() != $item->getStatus()){
+                return;
+            }
+        }
+        $parentItem->setStatus($item->getStatus());
+        $this->updateItem($parentItem);
+    }
+
+    private function updateCategory($item){
+        if($item->getParentId() != null){
+            $parentItem = $this->getById($item->getParentId());
+            $parentItem->setCategoryId($item->getCategoryId());
+            $this->updateItem($parentItem);
+            $subItems = $this->getSubItems($item->getParentId());
+            foreach($subItems as $subItem) {
+                $subItem->setCategoryId($item->getCategoryId());
+                $this->updateItem($subItem);
+            }
+        }
+        $subItems = $this->getSubItems($item->getId());
+        foreach($subItems as $subItem) {
+            $subItem->setCategoryId($item->getCategoryId());
+            $this->updateItem($subItem);
+        }
+    }
+
+    private function updateItem($item) {
         $date = date('Y-m-d H:i:s');
         $item->setUpdateTime($date);
         $result = $this->itemRepository->update($item);
@@ -108,5 +166,13 @@ class ItemService{
         }
         $result = $this->itemRepository->delete($id);
         return $result;
+    }
+
+    public function finishItem($id) {
+        $item = $this->getById($id);
+        if($item->getStatus() === 2) {
+            return;
+        }
+        $this->update($item->getId(), $item->getTitle(), $item->getContent(), $item->getCategoryId(), 2, $item->getFinishTime(), null);
     }
 }
