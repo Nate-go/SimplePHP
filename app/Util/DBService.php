@@ -3,7 +3,7 @@ namespace App\Util;
 class DBService {
     public static function getInsertQuery($data) {
 
-        $array = get_object_vars($data);
+        $array = $data->getListVariable();
         $id = $array['id'];
         unset($array['id']);
         $fields = '';
@@ -12,30 +12,37 @@ class DBService {
 
         foreach ($array as $key => $value) {
             $fields .= $separator . $key;
-            if(is_string($value)) {
+            if(is_string($value) and $value !== 'null') {
                 $values .= $separator . "'" . addslashes($value) . "'";
             } else {
                 $values .= $separator . addslashes($value);
             }
             $separator = ', ';
         }
-
-        return ['id' => $id, 'fields' => $fields, 'values' => $values];
-        
+        return [$id, $fields, $values];
     }
 
     public static function getUpdateQuery($data) {
-        $array = get_object_vars($data);
+        $array = $data->getListVariable();
         $id = $array['id'];
         unset($array['id']);
+        unset($array['createTime']);
+        if(array_key_exists('parentId', $array)) {
+            unset($array['parentId']);
+        }
         $updateFields = '';
         $separator = '';
 
         foreach ($array as $key => $value) {
-            $updateFields .= $separator . "$key = " . addslashes($value) . "";
+            if(is_string($value) and $value !== 'null') {
+                $updateFields .= $separator . "$key = '" . addslashes($value) . "'";
+            } else {
+                $updateFields .= $separator . "$key = " . addslashes($value) . "";
+            }
             $separator = ', ';
         }
+        
 
-        return ['id' => $id, 'updateFields' => $updateFields];
+        return [$id, $updateFields];
     }
 }

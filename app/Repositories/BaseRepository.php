@@ -2,28 +2,37 @@
 namespace App\Repositories;
 use App\Util\DBService;
 use App\Util\StringService;
+use BadMethodCallException;
+use App\Models\Item;
+
+spl_autoload_register(function ($className) {
+    echo $className;
+    $filePath = ROOT_PATH . '\\' . 'Models' . '\\' . strtolower($className) . '.php';
+    echo $filePath;
+    // Check if the file exists and load it if it does
+    if (file_exists($filePath)) {
+        require_once $filePath;
+    }
+});
 
 class BaseRepository{
     private $db;
 
-    private $name;
-    private $className;
+    private $tableName;
 
     public function __construct(){
 
         $this->db = DataBase::getInstance();
-        $this->className = StringService::getClassName(get_called_class());
-        $this->name = strtolower($this->className) . 's';
+        $className = StringService::getClassName(get_called_class());
+        $this->tableName = StringService::pluralize(strtolower($className));;
     }
 
     public function findAll() {
         $list = [];
-        $req = $this->db->query('SELECT * FROM ' . $this->name);
+        $req = $this->db->query('SELECT * FROM ' . $this->tableName);
 
         foreach ($req->fetchAll() as $item) {
-            $cName = ucfirst($this->name);
-            $object = new $cName();
-            $list[] = $object->setByArr($item);
+            $list[] = $item;
         }
 
         return $list;
@@ -33,25 +42,28 @@ class BaseRepository{
     {
         [$id, $fields, $values] = DBService::getInsertQuery($data);
 
-        $query = "INSERT INTO $this->name ($fields) VALUES ($values)";
+        $query = "INSERT INTO $this->tableName ($fields) VALUES ($values)";
         $result = $this->db->exec($query);
-
+        if($result > 0) {
+            return $this->db->lastInsertId();
+        }
         return $result;
     }
 
-    public function update($id, $data)
+    public function update($data)
     {
         [$id, $updateFields] = DBService::getUpdateQuery($data);
 
-        $query = "UPDATE $this->name SET $updateFields WHERE id = $id";
-        $result = $this->db->exec($query);
+        $query = "UPDATE $this->tableName SET $updateFields WHERE id = $id";
 
+        $result = $this->db->exec($query);
+        
         return $result;
     }
 
     public function delete($id)
     {
-        $query = "DELETE FROM $this->name WHERE id = " . addslashes($id);
+        $query = "DELETE FROM $this->tableName WHERE id = " . addslashes($id);
         $result = $this->db->exec($query);
 
         return $result;
@@ -59,15 +71,37 @@ class BaseRepository{
 
     public function read($id)
     {
+        if($id === null) {
+            $id = 'null';
+        }
         $list = [];
-        $req = $this->db->query('SELECT * FROM ' . $this->name . ' WHERE id = ' . addslashes($id));
+        $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE id = ' . addslashes($id);
+        $req = $this->db->query($sql);
 
         foreach ($req->fetchAll() as $item) {
-            $cName = ucfirst($this->name);
-            $object = new $cName();
-            $list[] = $object->setByArr($item);
+            $list[] = $item;
         }
 
+        return $list; 
+    }
+
+    public function __call($method, $args) {
+        $property = lcfirst(substr($method, 5));
+
+        $list = [];
+        
+        if(is_numeric($args[0])) {
+            $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE '. $property . '=' . $args[0];
+        } else {
+            $arg = $args[0] === null ? ' is null' : '=' . '"'. $args[0] . '"';
+            $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE '. $property . $arg;
+        }
+        
+        $req = $this->db->query($sql);
+
+        foreach ($req->fetchAll() as $item) {
+            $list[] = $item;
+        }
         return $list; 
     }
 }

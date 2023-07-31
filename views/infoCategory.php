@@ -1,67 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>Category Infomation</title>
     <style>
-          <?php require_once 'css/styles.css'; ?>
+          <?php require_once 'css/infoItem.css'; ?>
       </style>
 </head>
 <body>
     <div class="container">
-    <h1>Your Todo List</h1>
+        <h1>Category Infomation</h1>
         <div class="header">
-            <div class="header-left">
-                <a class="btn" href="<?php echo str_replace('{id}', 'null', $routes->get('loadAddItem')->getPath()) ?>">Add Item</a>
-                <a class="btn" href="<?php echo $routes->get('loadAddCategory')->getPath() ?>">Add Category</a>
+                <div class="header-left">
+                    <a class="btn" href="<?php echo str_replace('{id}', 'null', $routes->get('loadAddItem')->getPath()) ?>">Add Item</a>
+                </div>
+                <div class="header-right">
+                    <a class="btn" href="<?php echo $routes->get('loadHome')->getPath() ?>">Home</a>
+                </div>
             </div>
-            <div class="header-right">
-                <!-- <button class="btn">Search</button>
-                <input type="text" class="search-bar" placeholder="Search..."> -->
-            </div>
-        </div>
 
         <div class="tab">
-            <button class="tablinks active" onclick="openTab(event, 'tab1')">Today</button>
-            <button class="tablinks" onclick="openTab(event, 'tab2')">All</button>
-            <button class="tablinks" onclick="openTab(event, 'tab3')">Category</button>
-        </div>
-
+            <button class="tablinks active" onclick="openTab(event, 'tab1')">Infomation</button>
+            <button class="tablinks" onclick="openTab(event, 'tab2')">Items follow</button>
+        </div>    
         <div id="tab1" class="tabcontent" style="display: block;">
-            <div class="roll-table">
-                <table class="task-table" id="table1">
-                    <tr>
-                        <th>Title</th>
-                        <th>Update Date</th>
-                        <th>Finish Date</th>
-                        <th>Status : 
-                            <select onchange="filterTableByStatus('table1')">
-                                <option value='ALL'>ALL</option>
-                                <option value='TODO'>TODO</option>
-                                <option value='INPROGRESS'>INPROGRESS</option>
-                                <option value='COMPLETE'>COMPLETE</option>
-                                <option value='POSTPONE'>POSTPONE</option>
-                            </select>
-                        </th>
-                        <th>Action</th>
-                    </tr>
-                    <?php
-                            $html = '';
-                            foreach ($todayItems as $item) {
-                                $html .= '<tr>';
-                                $html .= '<td>' . $item->getTitle() . '</td>';
-                                $html .= '<td>' . $item->getUpdateTime() . '</td>';
-                                $html .= '<td>' . $item->getFinishTime() . '</td>';
-                                $html .= '<td>' . STATUS[$item->getStatus()] . '</td>';
-                                $html .= '<td>';
-                                $html .= '<a class="delete-btn" onclick="postForm(0, ' . $item->getId() . ')">Delete</a>';
-                                $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('loadInfoItem')->getPath()) . '">Edit</a>';
-                                $html .= '</td>';
-                                $html .= '</tr>';
-                            }
-                        echo $html;
-                    ?>
-                </table>
-            </div>
+            <form id="addProductForm" action="<?php echo $id?>" method="post">
+                <label for="title">Content</label>
+                <input class='input' type="text" name="content" id="content" required value="<?php echo htmlspecialchars($category->getContent()); ?>">
+                <br>
+                <input class="btn" type="submit" value=Save>
+            </form>
         </div>
 
         <div id="tab2" class="tabcontent">
@@ -101,37 +68,10 @@
                 </table>
             </div>
         </div>
-
         <form id="postForm" action="" method="POST">
-            <input id="model" hidden name="model" value="">
-            <input id="id" hidden name="id" value="">
+            <input style='display:none;' id="model" name="model" value="">
+            <input style='display:none;' id="id" name="id" value="">
         </form>
-
-        <div id="tab3" class="tabcontent">
-            <div class="roll-table">
-                <table class="task-table">
-                    <tr>
-                        <th>Content</th>
-                        <th>Update Date</th>
-                        <th>Action</th>
-                    </tr>
-                    <?php
-                        $html = '';
-                        foreach ($allCategory as $item) {
-                            $html .= '<tr>';
-                            $html .= '<td>' . $item->getContent() . '</td>';
-                            $html .= '<td>' . $item->getUpdateTime() . '</td>';
-                            $html .= '<td>';
-                            $html .= '<a class="delete-btn" onclick="postForm(1, ' . $item->getId() . ')">Delete</a>';
-                            $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('loadInfoCategory')->getPath()) . '">Edit</a>';
-                            $html .= '</td>';
-                            $html .= '</tr>';
-                        }
-                        echo $html;
-                    ?>
-                </table>
-            </div>
-        </div>
     </div>
 
     <script>

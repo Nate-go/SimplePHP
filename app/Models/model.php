@@ -4,35 +4,12 @@ use BadMethodCallException;
 use FFI\Exception;
 
 class Model {
-    public function setByArr($arr) {
-        foreach ($arr as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->{$key} = $value;
-            }
-        }
-    }
 
-    public function __call($method, $args) {
-        $property = lcfirst(substr($method, 3));
+    protected $createTime;
+
+    protected $updateTime;
+
+    public function __construct() {
         
-        if (property_exists($this, $property)) {
-            if (strncasecmp($method, 'get', 3) === 0) {
-                try {
-                    $temp = $this->$property;
-                    return $this->$property;
-                } catch(e) {
-                    return null;
-                }
-            } elseif (strncasecmp($method, 'set', 3) === 0) {
-                try {
-                    $temp = $this->$property;
-                    $this->$property = $args[0];
-                } catch(e) {
-                    return null;
-                }
-            }
-        } else {
-            throw new BadMethodCallException("Method $method does not exist.");
-        }
     }
 }
