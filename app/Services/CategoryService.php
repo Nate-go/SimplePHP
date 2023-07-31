@@ -2,12 +2,15 @@
 namespace App\Services;
 use App\Models\Category;
 use App\Repositories\CategoryRepository;
+use App\Repositories\ItemRepository;
 
 class CategoryService{
     private $categoryRepository; 
+    private $itemService; 
     
     public function __construct(){
         $this->categoryRepository = new CategoryRepository();
+        $this->itemService = new ItemService();
     }
 
     private function mappingData($list){
@@ -56,6 +59,10 @@ class CategoryService{
     }
 
     public function delete($id) {
+        $allitems = $this->itemService->getByCategory($id);
+        foreach($allitems as $item) {
+            $this->itemService->delete($item->getId());
+        }
         $result = $this->categoryRepository->delete($id);
         return $result;
     }

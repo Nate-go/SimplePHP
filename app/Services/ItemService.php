@@ -75,6 +75,11 @@ class ItemService{
         }
     }
 
+    public function getByCategory($id) {
+        $allItems = $this->mappingData($this->itemRepository->getByCategoryId($id));
+        return $allItems;
+    }
+
     public function add($title=null, $content=null, $category=null, $status=null, $finishedTime=null, $parentId= null) {
         $item = new Item($title, $content, $category, $status, $finishedTime, $parentId);
         $date = date('Y-m-d H:i:s');

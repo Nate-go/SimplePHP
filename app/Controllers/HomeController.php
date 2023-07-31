@@ -21,21 +21,45 @@ class HomeController extends BaseController
 
     public function loadHome(RouteCollection $routes)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if(isset($_POST['model'])) {
-                $model = $_POST['model'];
-                $id = $_POST['id'];
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'POST':
+              $this->postMethodHome($routes);
+              break;
+            case 'GET':
+              $this->getMethodHome($routes);
+              break;
+        }
+    }
+
+    private function postMethodHome(RouteCollection $routes){
+        if(isset($_POST['model'])) {
+            $model = $_POST['model'];
+            $id = $_POST['id'];
             
-                if($model === self::ITEM_MODEL) {
-                    $this->itemService->delete(intval($id));
-                } elseif($model === self::CATEGORY_MODEL) {
-                    $this->categoryService->delete(intval($id));
-                }
+            switch ($model) {
+                case self::ITEM_MODEL:
+                  $this->deleteItem($id);
+                  break;
+                case self::CATEGORY_MODEL:
+                  $this->deleteCategory($id);
+                  break;
             }
         }
+        $this->getMethodHome($routes);
+    }
+
+    private function getMethodHome(RouteCollection $routes){
         $todayItems = $this->itemService->getTodayItems();
         $allItems = $this->itemService->getAll();
         $allCategory = $this->categoryService->getAll();
         require_once $this->loadView('home.php');
+    }
+
+    private function deleteItem($id){
+        $this->itemService->delete(intval($id));
+    }
+
+    private function deleteCategory($id){
+        $this->categoryService->delete(intval($id));
     }
 }

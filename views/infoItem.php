@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Task Management</title>
+    <title>Item Infomation</title>
     <style>
           <?php require_once 'css/infoItem.css'; ?>
       </style>
 </head>
 <body>
     <div class="container">
+        <h1>Item Infomation</h1>
         <div class="header">
             <div class="header-left">
-                <a class="btn" href="<?php echo str_replace('{id}', $mainItem->getId(), $routes->get('addItem')->getPath()) ?>">Add Child</a>
-                <a class="btn" href="<?php echo $routes->get('addCategory')->getPath() ?>">Add Category</a>
+                <a class="btn" href="<?php echo str_replace('{id}', $mainItem->getId(), $routes->get('loadAddItem')->getPath()) ?>">Add Child</a>
+                <a class="btn" href="<?php echo $routes->get('loadAddCategory')->getPath() ?>">Add Category</a>
             </div>
             <div class="header-right">
                 <a class="btn" href="<?php echo $routes->get('loadHome')->getPath() ?>">Home</a>
@@ -103,7 +104,7 @@
                             $html .= '<td>' . STATUS[$item->getStatus()] . '</td>';
                             $html .= '<td>';
                             $html .= '<a class="delete-btn" onclick="postForm(0, ' . $item->getId() . ')">Delete</a>';
-                            $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('infoItem')->getPath()) . '">Edit</a>';
+                            $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('loadInfoItem')->getPath()) . '">Edit</a>';
                             $html .= '</td>';
                             $html .= '</tr>';
                         }
@@ -145,7 +146,7 @@
                         echo '<td>' . STATUS[$item->getStatus()] . '</td>';
                         echo '<td>';
                         echo '<a class="delete-btn" onclick="postForm(0, ' . $item->getId() . ')">Delete</a>';
-                        echo '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('infoItem')->getPath()) . '">Edit</a>';
+                        echo '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('loadInfoItem')->getPath()) . '">Edit</a>';
                         echo '</td>';
                         echo '</tr>';
                     }

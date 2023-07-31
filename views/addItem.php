@@ -11,7 +11,7 @@
     <h1>Add Item</h1>
     <div class="header">
             <div class="header-left">
-                <a class="btn" href="<?php echo $routes->get('addCategory')->getPath() ?>">Add Category</a>
+                <a class="btn" href="<?php echo $routes->get('loadAddCategory')->getPath() ?>">Add Category</a>
             </div>
             <div class="header-right">
             <a class="btn" href="<?php echo $routes->get('loadHome')->getPath() ?>">Home</a>
