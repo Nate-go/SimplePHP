@@ -41,6 +41,7 @@ class ItemController extends BaseController
 
             $this->itemService->add($title, $content, $category, $status, $finishedTime, $id);
         }
+        $this->getMethodAddItem($id, $routes);
     }
 
     public function loadInfoItem($id, RouteCollection $routes){
@@ -59,6 +60,9 @@ class ItemController extends BaseController
             $this->deleteItem();
         } else {
             $this->updateItem($id);
+            $homeController = new HomeController();
+            $homeController->loadHome($routes);
+            return;
         }
         $this->getMethodInfoItem($id, $routes);
     }
