@@ -11,7 +11,7 @@
         <h1>Add Category</h1>
         <div class="header">
                 <div class="header-left">
-                    <a class="btn" href="<?php echo str_replace('{id}', 'null', $routes->get('addItem')->getPath()) ?>">Add Item</a>
+                    <a class="btn" href="<?php echo str_replace('{id}', 'null', $routes->get('loadAddItem')->getPath()) ?>">Add Item</a>
                 </div>
                 <div class="header-right">
                     <a class="btn" href="<?php echo $routes->get('loadHome')->getPath() ?>">Home</a>

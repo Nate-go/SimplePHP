@@ -11,8 +11,8 @@
     <h1>Your Todo List</h1>
         <div class="header">
             <div class="header-left">
-                <a class="btn" href="<?php echo str_replace('{id}', 'null', $routes->get('addItem')->getPath()) ?>">Add Item</a>
-                <a class="btn" href="<?php echo $routes->get('addCategory')->getPath() ?>">Add Category</a>
+                <a class="btn" href="<?php echo str_replace('{id}', 'null', $routes->get('loadAddItem')->getPath()) ?>">Add Item</a>
+                <a class="btn" href="<?php echo $routes->get('loadAddCategory')->getPath() ?>">Add Category</a>
             </div>
             <div class="header-right">
                 <!-- <button class="btn">Search</button>
@@ -54,7 +54,7 @@
                                 $html .= '<td>' . STATUS[$item->getStatus()] . '</td>';
                                 $html .= '<td>';
                                 $html .= '<a class="delete-btn" onclick="postForm(0, ' . $item->getId() . ')">Delete</a>';
-                                $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('getInfoItem')->getPath()) . '">Edit</a>';
+                                $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('loadInfoItem')->getPath()) . '">Edit</a>';
                                 $html .= '</td>';
                                 $html .= '</tr>';
                             }
@@ -92,7 +92,7 @@
                                 $html .= '<td>' . STATUS[$item->getStatus()] . '</td>';
                                 $html .= '<td>';
                                 $html .= '<a class="delete-btn" onclick="postForm(0, ' . $item->getId() . ')">Delete</a>';
-                                $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('getInfoItem')->getPath()) . '">Edit</a>';
+                                $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('loadInfoItem')->getPath()) . '">Edit</a>';
                                 $html .= '</td>';
                                 $html .= '</tr>';
                             }
@@ -123,7 +123,7 @@
                             $html .= '<td>' . $item->getUpdateTime() . '</td>';
                             $html .= '<td>';
                             $html .= '<a class="delete-btn" onclick="postForm(1, ' . $item->getId() . ')">Delete</a>';
-                            $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('getInfoCategory')->getPath()) . '">Edit</a>';
+                            $html .= '<a class="edit-btn" href="' . str_replace('{id}', $item->getId(), $routes->get('loadInfoCategory')->getPath()) . '">Edit</a>';
                             $html .= '</td>';
                             $html .= '</tr>';
                         }
