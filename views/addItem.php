@@ -31,8 +31,15 @@
         <select name="category" id="category" required>
                 <?php
                         $html = '';
-                        foreach ($allCategories as $item) {
-                            $html .= '<option value=' . $item->getId() . '>' . $item->getContent() . '</option>';
+                        foreach ($allCategories as $category) {
+                            if($id !== 'null') {
+                                $html .= '<option value="' . htmlspecialchars($parentItem->getCategoryId()) . ' selected">' . htmlspecialchars($categories[$parentItem->getCategoryId()]) . '</option>';
+                                break;
+                            }
+                            $categoryId = $category->getId();
+                            $categoryContent = $category->getContent();
+                            $selected = ($categoryId === $parentItem->getCategoryId()) ? 'selected' : '';
+                            $html .= '<option value="' . htmlspecialchars($categoryId) . '" ' . $selected . '>' . htmlspecialchars($categoryContent) . '</option>';
                         }
                     echo $html;
                 ?>
@@ -54,5 +61,18 @@
         <input class="btn" type="submit" value="Add">
     </form>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var startDateInput = document.getElementById("finishedTime");
+
+            var today = new Date().toISOString().split('T')[0];
+            var max = <?php echo '"' . $parentItem->getFinishTime() . '";'?>
+
+            startDateInput.setAttribute("min", today);
+            if(max !== 'null') {
+                startDateInput.setAttribute("max", max);
+            }
+        })
+</script>
 </body>
 </html>

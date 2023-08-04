@@ -66,6 +66,11 @@ class CategoryController extends BaseController
     private function getMethodInfoCategory($id, RouteCollection $routes) {
         $allItems = $this->itemService->getByCategory($id);
         $category = $this->categoryService->getById($id);
+        $allCategories = $this->categoryService->getAll();
+        $categories = array();
+        foreach ($allCategories as $category) {
+            $categories[$category->getId()] = $category->getContent();                                 
+        }
         require_once $this->loadView('infoCategory.php');
     }
 }
